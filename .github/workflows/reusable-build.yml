@@ -1,0 +1,55 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: 'Build ${{ matrix.os }}'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Setup Crystal
+        uses: crystal-lang/install-crystal@v1
+
+      - name: Build
+        shell: bash
+        run: |
+          mkdir build
+          crystal build src/helloworld.cr -o build/helloworld
+          
+      - name: Assemble
+        uses: jreleaser/release-action@v2
+        with:
+          arguments: assemble
+        env:
+          JRELEASER_PROJECT_VERSION: ${{ inputs.version }}
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          retention-days: 1
+          name: artifacts
+          path: |
+            out/jreleaser/assemble/helloworld/archive/*.zip
+
+      - name: JReleaser output
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          retention-days: 1
+          name: jreleaser-${{ runner.os }}
+          path: |
+            out/jreleaser/trace.log
+            out/jreleaser/output.properties
