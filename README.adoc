@@ -1,0 +1,10 @@
+= Helloworld in Crystal
+
+This repository shows how to configure link:https://github.com/features/actions[GitHub Actions] and link:https://jreleaser.org/[JReleaser] to:
+
+ * compile a helloworld app for the followign targets:
+   ** macos-x86_64
+   ** linux-x86_64
+   ** windows-x86_64
+ * assemble zip distributions with JReleaser
+ * create rolling early-access releases with JReleaser on every push to `main` branch
