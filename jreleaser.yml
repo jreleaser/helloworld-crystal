@@ -4,8 +4,8 @@ environment:
 
 project:
   name: helloworld
-  description: HelloWorld in Zig
-  longDescription: HelloWorld in Zig
+  description: HelloWorld in Crystal
+  longDescription: HelloWorld in Crystal
   links:
     homepage: https://github.com/jreleaser/helloworld-crystal
   authors:

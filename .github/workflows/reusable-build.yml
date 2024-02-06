@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         
       - name: Setup Crystal
         uses: crystal-lang/install-crystal@v1
@@ -36,20 +36,19 @@ jobs:
           JRELEASER_PROJECT_VERSION: ${{ inputs.version }}
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          retention-days: 1
-          name: artifacts
-          path: |
-            out/jreleaser/assemble/helloworld/archive/*.zip
-
       - name: JReleaser output
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          retention-days: 1
-          name: jreleaser-${{ runner.os }}
+          name: jreleaser-assemble-${{ runner.os }}-${{ runner.arch }}
           path: |
             out/jreleaser/trace.log
             out/jreleaser/output.properties
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          retention-days: 1
+          name: artifact-${{ runner.os }}-${{ runner.arch }}
+          path: |
+            out/jreleaser/assemble/helloworld/archive/*.zip
