@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, macos-13, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -26,8 +26,8 @@ jobs:
         shell: bash
         run: |
           mkdir build
-          crystal build src/helloworld.cr -o build/helloworld
-          
+          crystal build src/helloworld.cr -o build/helloworld          
+
       - name: Assemble
         uses: jreleaser/release-action@v2
         with:
